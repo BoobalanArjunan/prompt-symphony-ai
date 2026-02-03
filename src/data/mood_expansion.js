@@ -1,0 +1,23 @@
+import { generateSubcategories } from './utils/generatorUtils';
+
+export const moodExpansionAction = generateSubcategories('action', 1000);
+export const moodExpansionAdventure = generateSubcategories('adventure', 1000);
+export const moodExpansionSuspense = generateSubcategories('suspense', 1000);
+export const moodExpansionHorror = generateSubcategories('horror', 1000);
+export const moodExpansionComedy = generateSubcategories('comedy', 1000);
+export const moodExpansionRomance = generateSubcategories('romance', 1000);
+export const moodExpansionSadness = generateSubcategories('sadness', 1000);
+export const moodExpansionFantasy = generateSubcategories('fantasy', 1000);
+export const moodExpansionInspirational = generateSubcategories('inspirational', 1000);
+export const moodExpansionGaming = generateSubcategories('gaming', 1000);
+export const moodExpansionSciFi = generateSubcategories('scifi', 1000);
+export const moodExpansionEpic = generateSubcategories('epic', 1000);
+export const moodExpansionMystery = generateSubcategories('mystery', 1000);
+export const moodExpansionSurreal = generateSubcategories('surreal', 1000);
+export const moodExpansionRitual = generateSubcategories('ritual', 1000);
+export const moodExpansionIndustrial = generateSubcategories('industrial', 1000);
+export const moodExpansionMythic = generateSubcategories('mythic', 1000);
+export const moodExpansionMinimalist = generateSubcategories('minimalist', 1000);
+export const moodExpansionGlitch = generateSubcategories('glitch', 1000);
+export const moodExpansionCelestial = generateSubcategories('celestial', 1000);
+export const moodExpansionEDM = generateSubcategories('edm', 1000);
