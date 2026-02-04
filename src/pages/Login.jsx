@@ -72,7 +72,7 @@ const Login = () => {
 
                 {error && <div className="bg-red-500/10 border border-red-500/50 text-red-200 p-3 rounded-lg mb-4 text-sm">{error}</div>}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
                     <div className="space-y-2">
                         <label className="text-xs uppercase tracking-wider text-slate-500 font-semibold">Email Address</label>
                         <div className="relative">
@@ -84,6 +84,7 @@ const Login = () => {
                                 placeholder="name@example.com"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                autoComplete="off"
                             />
                         </div>
                     </div>
@@ -91,7 +92,7 @@ const Login = () => {
                     <div className="space-y-2">
                         <div className="flex justify-between items-center">
                             <label className="text-xs uppercase tracking-wider text-slate-500 font-semibold">Password</label>
-                            <a href="#" className="text-xs text-cyan-500 hover:text-cyan-400">Forgot Password?</a>
+                            <Link to="/forgot-password" className="text-xs text-cyan-500 hover:text-cyan-400">Forgot Password?</Link>
                         </div>
                         <div className="relative">
                             <Lock className="absolute left-3 top-3 text-slate-600 h-5 w-5" />
@@ -102,6 +103,7 @@ const Login = () => {
                                 placeholder="••••••••"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="new-password"
                             />
                         </div>
                     </div>

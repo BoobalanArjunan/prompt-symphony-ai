@@ -153,12 +153,6 @@ const PromptCard = ({ prompt, promptId, theme, genre, subGenre }) => {
                     </h3>
 
                     <div className="flex items-center gap-2">
-                        {/* Community Upvotes (Mock) */}
-                        <div className="flex items-center gap-1.5 mr-2 px-2 py-1 bg-slate-900 rounded-md border border-slate-800 text-slate-400 text-xs font-mono" title="Community Upvotes">
-                            <span className="text-yellow-500">▲</span>
-                            {upvoteCount}
-                        </div>
-
                         {/* Favorite Button (Star Icon) - Quick Toggle */}
                         <button
                             onClick={handleFavorite}
@@ -170,7 +164,7 @@ const PromptCard = ({ prompt, promptId, theme, genre, subGenre }) => {
                             <Star size={16} fill={isFavorite ? "currentColor" : "none"} />
                         </button>
 
-                        {/* Save Button (Explicit Text) - New addition requested */}
+                        {/* Save Button (Explicit Text) */}
                         <button
                             onClick={handleFavorite}
                             className={`flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-md border transition-all ${isFavorite
@@ -179,18 +173,16 @@ const PromptCard = ({ prompt, promptId, theme, genre, subGenre }) => {
                             title="Save prompt to dashboard"
                         >
                             {isFavorite ? <Check size={14} /> : <Star size={14} />}
-                            {isFavorite ? 'Saved' : 'Save'}
+                            {isFavorite ? 'Saved' : 'Save to my Library'}
                         </button>
 
-                        {/* Suno / Udio / Etc Copy Button - Primary Action */}
-                        <button
-                            onClick={handleSunoCopy}
-                            className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-md text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border border-indigo-400/30 shadow-lg shadow-indigo-500/20 transition-all`}
-                            title="Auto-formats text into tags for Suno, Udio & others"
+                        {/* Suno / Udio / Etc Static Indicator */}
+                        <div
+                            className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-md text-white bg-gradient-to-r from-indigo-600 to-purple-600 border border-indigo-400/30 shadow-lg shadow-indigo-500/20 cursor-default select-none`}
                         >
-                            {sunoCopied ? <Check size={14} /> : <Music2 size={14} />}
-                            {sunoCopied ? 'Ready!' : 'Suno / Udio / Etc..'}
-                        </button>
+                            <Music2 size={14} />
+                            Suno / Udio / Etc..
+                        </div>
 
                         {/* Standard Copy Button - Secondary Action */}
                         <button

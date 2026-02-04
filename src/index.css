@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -8,9 +9,11 @@
 }
 
 :root {
+  background: radial-gradient(circle at 50% 0%, #0f1c2e 0%, var(--color-cinematic-bg) 60%);
   background-color: var(--color-cinematic-bg);
+  background-attachment: fixed;
   color: #e2e8f0;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
 }
 
 body {

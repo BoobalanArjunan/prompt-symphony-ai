@@ -27,13 +27,7 @@ const LandingPage = () => {
                     <span>PromptSymphonyAI</span>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Link to="/login" className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block">
-                        Log In
-                    </Link>
-                    <Link to="/login" className="px-5 py-2.5 rounded-full bg-slate-800 border border-slate-700 hover:bg-slate-700 hover:border-slate-600 text-white text-sm font-bold transition-all shadow-lg shadow-black/20 flex items-center gap-2">
-                        <UserPlus size={16} />
-                        <span>Get Started</span>
-                    </Link>
+                    {/* Log In removed as requested */}
                 </div>
             </nav>
 
@@ -64,17 +58,14 @@ const LandingPage = () => {
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link
-                            to="/login"
-                            className="group relative px-8 py-4 bg-white text-slate-900 font-bold rounded-full text-lg shadow-[0_0_40px_-10px_rgba(34,211,238,0.5)] hover:shadow-[0_0_60px_-10px_rgba(34,211,238,0.7)] hover:scale-105 transition-all duration-300"
+                            to="/browse"
+                            className="group relative px-16 py-6 bg-white text-slate-900 font-black rounded-full text-4xl shadow-[0_0_50px_-10px_rgba(34,211,238,0.6)] hover:shadow-[0_0_80px_-10px_rgba(34,211,238,0.9)] hover:scale-105 transition-all duration-300"
                         >
-                            <span className="flex items-center gap-2">
-                                Explore Now
-                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                            <span className="flex items-center gap-4">
+                                Get Started
+                                <ArrowRight size={40} className="animate-pulse ml-2" />
                             </span>
                         </Link>
-                        <a href="#features" className="px-8 py-4 text-slate-400 hover:text-white font-medium transition-colors">
-                            Learn more
-                        </a>
                     </div>
                 </motion.div>
 

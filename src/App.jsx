@@ -11,9 +11,12 @@ import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
 import { genres } from './data/genres';
+
+import Library from './pages/Library';
 
 import LandingPage from './pages/LandingPage';
 
@@ -59,9 +62,11 @@ const App = () => {
               <Route path="/genre/:genreId/:subId" element={<SubCategoryDetail genres={genres} />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/library" element={<Library />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="*" element={<div className="p-10 text-center text-slate-500">Page not found</div>} />

@@ -3,17 +3,17 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-    User, CreditCard, Sparkles, LogOut, CheckCircle, BarChart3,
-    Star, Clock, ChevronRight, Settings, Shield, Trash2, ExternalLink
+    CreditCard, Sparkles, LogOut, CheckCircle, BarChart3,
+    Clock, Settings, Shield, ExternalLink
 } from 'lucide-react';
-import { collection, query, orderBy, limit, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import AccountSettingsModal from '../components/AccountSettingsModal';
+import { genres } from '../data/genres';
 
 const Dashboard = () => {
     const { user, userData, logout } = useAuth();
     const navigate = useNavigate();
-    const [favorites, setFavorites] = useState([]);
     const [history, setHistory] = useState([]);
     const [loadingData, setLoadingData] = useState(true);
     const [showSettings, setShowSettings] = useState(false);
@@ -23,28 +23,16 @@ const Dashboard = () => {
     const isPro = planId !== 'free';
     const planName = isPro ? (planId === 'monthly' ? 'Pro Monthly' : 'Pro Yearly') : 'Free Plan';
 
-    // Usage data helpers
     const dailyLimit = isPro ? 1000 : 5;
     const dailyCount = userData?.usage?.dailyCount || 0;
     const totalCopied = userData?.stats?.totalPromptsCopied || 0;
     const progressPercent = Math.min((dailyCount / dailyLimit) * 100, 100);
 
-    // Fetch Favorites & History
     useEffect(() => {
         const fetchData = async () => {
             if (!user) return;
 
             try {
-                // Fetch Favorites
-                const favQuery = query(
-                    collection(db, 'users', user.uid, 'favorites'),
-                    orderBy('savedAt', 'desc')
-                );
-                const favSnap = await getDocs(favQuery);
-                const favList = favSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                setFavorites(favList);
-
-                // Fetch History (Limit based on plan)
                 const historyLimit = isPro ? 50 : 10;
                 const histQuery = query(
                     collection(db, 'users', user.uid, 'history'),
@@ -64,17 +52,6 @@ const Dashboard = () => {
 
         fetchData();
     }, [user, isPro]);
-
-    const handleRemoveFavorite = async (id, e) => {
-        e.stopPropagation();
-        if (!user) return;
-        try {
-            await deleteDoc(doc(db, 'users', user.uid, 'favorites', id));
-            setFavorites(prev => prev.filter(item => item.id !== id));
-        } catch (error) {
-            console.error("Error removing favorite:", error);
-        }
-    };
 
     if (!user) {
         return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Loading Studio...</div>;
@@ -154,7 +131,6 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        {/* Progress Bar */}
                         <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-3">
                             {isPro ? (
                                 <div className="h-full w-full bg-gradient-to-r from-cyan-500 to-blue-500 animate-pulse relative">
@@ -269,60 +245,11 @@ const Dashboard = () => {
                     </motion.div>
                 </div>
 
-                {/* 3. Favorites Section */}
+                {/* 3. Recently Viewed Section */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                >
-                    <div className="flex items-center gap-2 mb-4">
-                        <Star className="text-amber-400 fill-amber-400/20" size={20} />
-                        <h2 className="text-xl font-bold text-white">Favorite Prompts</h2>
-                    </div>
-
-                    {loadingData ? (
-                        <div className="h-32 bg-slate-900/30 rounded-xl animate-pulse" />
-                    ) : favorites.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {favorites.map((item) => (
-                                <div key={item.id} className="group bg-slate-900/40 hover:bg-slate-900/60 border border-slate-800 hover:border-cyan-500/30 rounded-xl p-4 transition-all">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <div className="px-2 py-1 rounded bg-slate-800 text-xs text-cyan-400 font-medium border border-cyan-500/10">
-                                            {item.genre}
-                                        </div>
-                                        <button
-                                            onClick={(e) => handleRemoveFavorite(item.id, e)}
-                                            className="text-slate-600 hover:text-red-400 transition-colors"
-                                        >
-                                            <Trash2 size={14} />
-                                        </button>
-                                    </div>
-                                    <h3 className="text-white font-medium mb-3">{item.subGenre}</h3>
-                                    <div className="flex items-center justify-between mt-auto">
-                                        <span className="text-xs text-slate-500">
-                                            Saved {item.savedAt?.seconds ? new Date(item.savedAt.seconds * 1000).toLocaleDateString() : 'Recently'}
-                                        </span>
-                                        <button className="text-emerald-400 hover:text-emerald-300 text-xs font-medium flex items-center">
-                                            View Prompt <ChevronRight size={12} className="ml-1" />
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="bg-slate-900/30 border border-slate-800/50 rounded-xl p-8 text-center">
-                            <Star className="mx-auto text-slate-700 mb-3" size={32} />
-                            <p className="text-slate-400 mb-1">You haven't saved any prompts yet.</p>
-                            <p className="text-sm text-slate-600">Click the star icon on any prompt to save it here.</p>
-                        </div>
-                    )}
-                </motion.div>
-
-                {/* 4. Recently Viewed Section */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
                 >
                     <div className="flex items-center gap-2 mb-4">
                         <Clock className="text-purple-400" size={20} />
@@ -336,20 +263,33 @@ const Dashboard = () => {
                             </div>
                         ) : history.length > 0 ? (
                             <div className="divide-y divide-slate-800/50">
-                                {history.map((item) => (
-                                    <div key={item.id} className="p-4 flex items-center justify-between hover:bg-slate-800/20 transition-colors">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-2 h-2 rounded-full bg-cyan-500/50" />
-                                            <div>
-                                                <div className="text-slate-200 font-medium text-sm">{item.subGenre}</div>
-                                                <div className="text-xs text-slate-500">{item.genre}</div>
+                                {history.map((item) => {
+                                    const g = genres.find(g => g.title === item.genre);
+                                    const s = g?.subcategories.find(sub => sub.title === item.subGenre);
+                                    const canNavigate = g && s;
+
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            onClick={() => canNavigate && navigate(`/genre/${g.id}/${s.id}`)}
+                                            className={`p-4 flex items-center justify-between hover:bg-slate-800/20 transition-colors ${canNavigate ? 'cursor-pointer hover:bg-slate-800/40' : ''}`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-2 h-2 rounded-full bg-cyan-500/50" />
+                                                <div>
+                                                    <div className="text-slate-200 font-medium text-sm group-hover:text-cyan-400 transition-colors">
+                                                        {item.subGenre}
+                                                        {canNavigate && <ExternalLink size={12} className="inline ml-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-500" />}
+                                                    </div>
+                                                    <div className="text-xs text-slate-500">{item.genre}</div>
+                                                </div>
+                                            </div>
+                                            <div className="text-xs text-slate-500">
+                                                {item.viewedAt?.seconds ? new Date(item.viewedAt.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'}
                                             </div>
                                         </div>
-                                        <div className="text-xs text-slate-500">
-                                            {item.viewedAt?.seconds ? new Date(item.viewedAt.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'}
-                                        </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         ) : (
                             <div className="p-8 text-center text-slate-500 text-sm">
@@ -359,7 +299,6 @@ const Dashboard = () => {
                     </div>
                 </motion.div>
 
-                {/* 5. Footer Info */}
                 <div className="border-t border-slate-800/50 pt-8 pb-4">
                     <div className="flex items-center justify-center text-slate-400">
                         <span className="text-xs text-slate-600">PromptSymphonyAI v1.0.0</span>
@@ -368,7 +307,6 @@ const Dashboard = () => {
 
             </div>
 
-            {/* Modal */}
             <AccountSettingsModal
                 isOpen={showSettings}
                 onClose={() => setShowSettings(false)}

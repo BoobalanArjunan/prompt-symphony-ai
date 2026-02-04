@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Search, Menu, BookOpen, User, Mail, Home, Zap, LayoutDashboard, LogIn } from 'lucide-react';
+import { Search, Menu, BookOpen, User, Mail, Home, Zap, LayoutDashboard, LogIn, Bookmark } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header = ({ onMenuClick, genres }) => {
@@ -93,6 +93,13 @@ const Header = ({ onMenuClick, genres }) => {
                 >
                     <Mail size={18} />
                     <span className="hidden md:inline">Contact</span>
+                </NavLink>
+                <NavLink
+                    to="/library"
+                    className={({ isActive }) => `flex items-center gap-2 text-sm font-medium transition-colors ${isActive ? 'text-[var(--color-cinematic-gold)]' : 'text-slate-400 hover:text-white'}`}
+                >
+                    <Bookmark size={18} />
+                    <span className="hidden md:inline">My Library</span>
                 </NavLink>
 
                 {user ? (

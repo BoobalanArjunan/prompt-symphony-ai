@@ -85,7 +85,7 @@ const Signup = () => {
 
                 {error && <div className="bg-red-500/10 border border-red-500/50 text-red-200 p-3 rounded-lg mb-4 text-sm">{error}</div>}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
                     <div className="space-y-2">
                         <label className="text-xs uppercase tracking-wider text-slate-500 font-semibold">Full Name</label>
                         <div className="relative">
@@ -97,6 +97,7 @@ const Signup = () => {
                                 placeholder="John Composer"
                                 value={fullName}
                                 onChange={(e) => setFullName(e.target.value)}
+                                autoComplete="off"
                             />
                         </div>
                     </div>
@@ -112,6 +113,7 @@ const Signup = () => {
                                 placeholder="name@example.com"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                autoComplete="off"
                             />
                         </div>
                     </div>
@@ -127,6 +129,7 @@ const Signup = () => {
                                 placeholder="••••••••"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="new-password"
                             />
                         </div>
                     </div>

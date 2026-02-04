@@ -16,7 +16,8 @@ import {
     signInWithPopup,
     signOut,
     onAuthStateChanged,
-    sendEmailVerification
+    sendEmailVerification,
+    sendPasswordResetEmail
 } from 'firebase/auth';
 
 const AuthContext = createContext();
@@ -295,6 +296,10 @@ export const AuthProvider = ({ children }) => {
         return sendEmailVerification(user);
     };
 
+    const resetPassword = (email) => {
+        return sendPasswordResetEmail(auth, email);
+    };
+
     const value = {
         user,
         userData, // Expose for UI
@@ -302,6 +307,7 @@ export const AuthProvider = ({ children }) => {
         login,
         loginWithGoogle,
         logout,
+        resetPassword, // Added
         incrementCopyCount,
         checkDailyLimit,
         sendVerificationEmail,

@@ -2,20 +2,31 @@ import React, { useState } from 'react';
 import { Mail, MessageSquare, Bug, Lightbulb, Youtube, Github, Twitter, HelpCircle, Send, CheckCircle, Smartphone, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { db } from '../firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-const InputField = ({ label, type = "text", placeholder, options }) => (
+const InputField = ({ label, type = "text", placeholder, options, name, value, onChange }) => (
     <div className="mb-4">
         <label className="block text-slate-400 text-sm font-medium mb-2">{label}</label>
         {type === "textarea" ? (
             <textarea
                 rows="5"
+                name={name}
+                value={value}
+                onChange={onChange}
                 className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-[var(--color-cinematic-gold)] focus:ring-1 focus:ring-[var(--color-cinematic-gold)] transition-colors resize-none placeholder-slate-600"
                 placeholder={placeholder}
+                required
             ></textarea>
         ) : type === "select" ? (
             <div className="relative">
-                <select className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-[var(--color-cinematic-gold)] focus:ring-1 focus:ring-[var(--color-cinematic-gold)] transition-colors appearance-none cursor-pointer">
-                    {options.map((opt, i) => <option key={i}>{opt}</option>)}
+                <select
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-[var(--color-cinematic-gold)] focus:ring-1 focus:ring-[var(--color-cinematic-gold)] transition-colors appearance-none cursor-pointer"
+                >
+                    {options.map((opt, i) => <option key={i} value={opt}>{opt}</option>)}
                 </select>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                     <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -24,8 +35,12 @@ const InputField = ({ label, type = "text", placeholder, options }) => (
         ) : (
             <input
                 type={type}
+                name={name}
+                value={value}
+                onChange={onChange}
                 className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-slate-200 focus:outline-none focus:border-[var(--color-cinematic-gold)] focus:ring-1 focus:ring-[var(--color-cinematic-gold)] transition-colors placeholder-slate-600"
                 placeholder={placeholder}
+                required
             />
         )}
     </div>
@@ -33,14 +48,39 @@ const InputField = ({ label, type = "text", placeholder, options }) => (
 
 const Contact = () => {
     const [submitted, setSubmitted] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: 'Support',
+        message: ''
+    });
 
-    const handleSubmit = (e) => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // 1. Save to Firestore (Database Record)
+        try {
+            await addDoc(collection(db, 'contact_messages'), {
+                ...formData,
+                createdAt: serverTimestamp(),
+                status: 'new',
+                source: 'web_form'
+            });
+        } catch (error) {
+            console.error("Error saving message:", error);
+        }
+
+        // 2. Open User's Email Client (Primary Request)
+        const mailSubject = encodeURIComponent(`[${formData.subject}] Message from ${formData.name}`);
+        const mailBody = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+        window.location.href = `mailto:support@promptsymphonyai.com?subject=${mailSubject}&body=${mailBody}`;
+
         setSubmitted(true);
-        // Simulate API call
-        setTimeout(() => {
-            // Reset or something if needed
-        }, 3000);
     };
 
     return (
@@ -72,14 +112,37 @@ const Contact = () => {
                                 <Mail className="text-[var(--color-cinematic-gold)]" /> Send a Message
                             </h2>
 
-                            <InputField label="Name" placeholder="Your name" />
-                            <InputField label="Email" type="email" placeholder="your@email.com" />
+                            <InputField
+                                label="Name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                placeholder="Your name"
+                            />
+                            <InputField
+                                label="Email"
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="your@email.com"
+                            />
                             <InputField
                                 label="Subject"
                                 type="select"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleChange}
                                 options={['Support', 'Feedback', 'Feature Request', 'Bug Report', 'Business Inquiry', 'Other']}
                             />
-                            <InputField label="Message" type="textarea" placeholder="How can we help you today?" />
+                            <InputField
+                                label="Message"
+                                type="textarea"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                                placeholder="How can we help you today?"
+                            />
 
                             <button
                                 type="submit"
