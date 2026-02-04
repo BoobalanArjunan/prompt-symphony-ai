@@ -39,7 +39,7 @@ const Sidebar = ({ genres, isOpen, onClose }) => {
                 </div>
 
                 <nav className="p-4 space-y-1">
-                    <div className="px-3 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <div className="px-3 py-3 text-xs font-bold text-slate-200 uppercase tracking-widest">
                         Genres
                     </div>
                     {genres.map((genre) => (
@@ -52,7 +52,7 @@ const Sidebar = ({ genres, isOpen, onClose }) => {
                             className={({ isActive }) =>
                                 `flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group relative overflow-hidden ${isActive
                                     ? 'bg-slate-900 text-[var(--color-cinematic-cyan)] border border-[var(--color-cinematic-cyan)]/30 shadow-[0_0_10px_rgba(34,211,238,0.1)]'
-                                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                                    : 'text-slate-300 hover:bg-slate-900 hover:text-white'
                                 }`
                             }
                         >
