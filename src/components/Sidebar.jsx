@@ -1,9 +1,42 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { X, Music } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { X, Music, ChevronRight, ChevronDown, Layers, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Sidebar = ({ genres, isOpen, onClose }) => {
+const SidebarGroup = ({ title, icon: Icon, children, defaultOpen = false, level = 0 }) => {
+    const [isOpen, setIsOpen] = useState(defaultOpen);
+
+    return (
+        <div className="mb-1">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium transition-colors rounded-lg group ${level === 0 ? 'text-slate-200 hover:bg-slate-900' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/50'
+                    }`}
+                style={{ paddingLeft: `${level * 12 + 12}px` }}
+            >
+                <div className="flex items-center gap-2">
+                    {Icon && <Icon size={18} className={level === 0 ? "text-[var(--color-cinematic-gold)]" : "text-slate-500 group-hover:text-slate-300"} />}
+                    <span>{title}</span>
+                </div>
+                {isOpen ? <ChevronDown size={14} className="text-slate-600" /> : <ChevronRight size={14} className="text-slate-600" />}
+            </button>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                    >
+                        {children}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+
+const Sidebar = ({ genres, edmGenres = [], isOpen, onClose }) => {
     return (
         <>
             {/* Mobile Overlay */}
@@ -39,32 +72,69 @@ const Sidebar = ({ genres, isOpen, onClose }) => {
                 </div>
 
                 <nav className="p-4 space-y-1">
-                    <div className="px-3 py-3 text-xs font-bold text-slate-200 uppercase tracking-widest">
-                        Genres
-                    </div>
-                    {genres.map((genre) => (
-                        <NavLink
-                            key={genre.id}
-                            to={`/genre/${genre.id}`}
-                            onClick={() => {
-                                if (window.innerWidth < 1024) onClose();
-                            }}
-                            className={({ isActive }) =>
-                                `flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group relative overflow-hidden ${isActive
-                                    ? 'bg-slate-900 text-[var(--color-cinematic-cyan)] border border-[var(--color-cinematic-cyan)]/30 shadow-[0_0_10px_rgba(34,211,238,0.1)]'
-                                    : 'text-slate-300 hover:bg-slate-900 hover:text-white'
-                                }`
-                            }
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <div className={`absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-cinematic-cyan)] transition-transform duration-300 ${isActive ? 'translate-x-0' : '-translate-x-full'}`} />
-                                    <genre.icon size={18} className={`transition-colors ${isActive ? 'text-[var(--color-cinematic-cyan)]' : 'group-hover:text-white'}`} />
-                                    <span className="text-sm font-medium">{genre.title}</span>
-                                </>
-                            )}
-                        </NavLink>
-                    ))}
+                    {/* Root Group: Cinematic Composing */}
+                    <SidebarGroup title="Cinematic Composing" icon={Layers} defaultOpen={true} level={0}>
+
+                        {/* Nested Group: Genres */}
+                        <SidebarGroup title="Genres" icon={Music} defaultOpen={true} level={1}>
+                            {genres.map((genre) => (
+                                <NavLink
+                                    key={genre.id}
+                                    to={`/genre/${genre.id}`}
+                                    onClick={() => {
+                                        if (window.innerWidth < 1024) onClose();
+                                    }}
+                                    style={{ paddingLeft: '48px' }} // Indent for level 2 items
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-3 px-3 py-2 mb-1 rounded-lg transition-all duration-200 group relative overflow-hidden block w-full ${isActive
+                                            ? 'bg-slate-900 text-[var(--color-cinematic-cyan)] border border-[var(--color-cinematic-cyan)]/30 shadow-[0_0_10px_rgba(34,211,238,0.1)]'
+                                            : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+                                        }`
+                                    }
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <div className={`absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-cinematic-cyan)] transition-transform duration-300 ${isActive ? 'translate-x-0' : '-translate-x-full'}`} />
+                                            <span className="text-sm font-medium truncate">{genre.title}</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            ))}
+                        </SidebarGroup>
+
+                    </SidebarGroup>
+
+                    {/* Root Group: EDM */}
+                    <SidebarGroup title="EDM (Electronic)" icon={Zap} defaultOpen={true} level={0}>
+
+                        {/* Nested Group: Genres */}
+                        <SidebarGroup title="Genres" icon={Music} defaultOpen={true} level={1}>
+                            {edmGenres.map((genre) => (
+                                <NavLink
+                                    key={genre.id}
+                                    to={`/genre/${genre.id}`}
+                                    onClick={() => {
+                                        if (window.innerWidth < 1024) onClose();
+                                    }}
+                                    style={{ paddingLeft: '48px' }} // Indent for level 2 items
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-3 px-3 py-2 mb-1 rounded-lg transition-all duration-200 group relative overflow-hidden block w-full ${isActive
+                                            ? 'bg-slate-900 text-[var(--color-cinematic-cyan)] border border-[var(--color-cinematic-cyan)]/30 shadow-[0_0_10px_rgba(34,211,238,0.1)]'
+                                            : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+                                        }`
+                                    }
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <div className={`absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-cinematic-cyan)] transition-transform duration-300 ${isActive ? 'translate-x-0' : '-translate-x-full'}`} />
+                                            <span className="text-sm font-medium truncate">{genre.title}</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            ))}
+                        </SidebarGroup>
+
+                    </SidebarGroup>
                 </nav>
 
                 <div className="p-4 mt-auto">

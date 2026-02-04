@@ -173,93 +173,39 @@ export const AuthProvider = ({ children }) => {
         const syncUserData = async () => {
             if (user) {
                 const userRef = doc(db, 'users', user.uid);
-                const userSnap = await getDoc(userRef);
-                const today = new Date().toISOString().split('T')[0];
+                try {
+                    const userSnap = await getDoc(userRef);
+                    const today = new Date().toISOString().split('T')[0];
 
-                if (userSnap.exists()) {
-                    const data = userSnap.data();
+                    if (userSnap.exists()) {
+                        const data = userSnap.data();
 
-                    // Logic to reset daily count if it's a new day
-                    let updates = {
-                        lastLoginAt: serverTimestamp(),
-                        lastActiveAt: serverTimestamp(),
-                        emailVerified: user.emailVerified,
-                        'stats.totalSessions': (data.stats?.totalSessions || 0) + 1
-                    };
+                        // Check if we need to reset daily count
+                        const lastReset = data.usage?.lastResetDate;
+                        // Handle date string or timestamp
+                        const lastResetStr = lastReset?.toDate ? lastReset.toDate().toISOString().split('T')[0] : lastReset;
 
-                    if (data.usage?.lastResetDate !== today) {
-                        updates['usage.dailyCount'] = 0;
-                        updates['usage.lastResetDate'] = today;
-                    }
+                        let updates = {};
+                        let localUsage = { ...(data.usage || {}) };
 
-                    await updateDoc(userRef, updates);
-
-                    // Merge updates locally for immediate UI reflect
-                    setUserData({ ...data, ...updates, lastLoginAt: new Date(), lastActiveAt: new Date() });
-                } else {
-                    // Create NEW user doc with comprehensive schema based on Antigravity Backend Prompt
-                    const newUserData = {
-                        // Authentication Reference
-                        uid: user.uid,
-                        email: user.email,
-                        emailVerified: user.emailVerified,
-                        authProvider: user.providerData && user.providerData[0] ? user.providerData[0].providerId : 'password',
-
-                        // Basic Profile
-                        fullName: user.displayName || '',
-                        photoURL: user.photoURL || null,
-                        accountStatus: 'active', // active, suspended
-
-                        // Account Timing
-                        createdAt: serverTimestamp(),
-                        lastLoginAt: serverTimestamp(),
-                        lastActiveAt: serverTimestamp(),
-
-                        // Plan & Subscription
-                        subscription: {
-                            planId: 'free', // Keeping planId for backward compatibility
-                            planType: 'free', // free, monthly, yearly
-                            status: 'active', // active, expired, canceled
-                            startDate: serverTimestamp(),
-                            endDate: null,
-                            autoRenew: false,
-                            billingCycle: 'monthly',
-                            paymentProvider: null,
-                            billingCountry: null // Captured from payment provider
-                        },
-
-                        // Usage Tracking
-                        usage: {
-                            dailyCount: 0,
-                            lastResetDate: today,
-                            dailyLimit: 5, // Default for free users
-                        },
-
-                        // User Preferences
-                        preferences: {
-                            theme: 'dark',
-                            language: 'en',
-                            favoriteGenres: []
-                        },
-
-                        // Badges & Feature Flags
-                        badges: {
-                            earlySupporter: true,
-                            betaAccess: false
-                        },
-
-                        // Analytics (Privacy-Safe)
-                        stats: {
-                            totalPromptsCopied: 0,
-                            totalSessions: 1,
-                            mostUsedGenre: null,
-                            lastFeatureAccessed: null,
-                            earlySupporter: true
+                        if (lastResetStr !== today) {
+                            updates['usage.dailyCount'] = 0;
+                            updates['usage.lastResetDate'] = today;
+                            localUsage.dailyCount = 0;
+                            localUsage.lastResetDate = today;
                         }
-                    };
 
-                    await setDoc(userRef, newUserData);
-                    setUserData(newUserData);
+                        // Always update last login
+                        updates['lastLoginAt'] = serverTimestamp();
+                        await updateDoc(userRef, updates);
+
+                        setUserData({ ...data, usage: localUsage });
+                    } else {
+                        // Init new user (simplified for recovery)
+                        setUserData({ usage: { dailyCount: 0 } });
+                    }
+                } catch (err) {
+                    console.error("Sync error", err);
                 }
             } else {
                 setUserData(null);

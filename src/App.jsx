@@ -15,6 +15,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
 import { genres } from './data/genres';
+import { edmGenres } from './data/edmGenres'; // Import EDM Data
 
 import Library from './pages/Library';
 
@@ -34,6 +35,9 @@ const App = () => {
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
 
+  // Combine for routing lookups
+  const allGenres = [...genres, ...edmGenres];
+
   return (
     <AuthProvider>
       <ScrollToTop />
@@ -41,6 +45,7 @@ const App = () => {
         {!isLandingPage && (
           <Sidebar
             genres={genres}
+            edmGenres={edmGenres}
             isOpen={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
@@ -50,16 +55,16 @@ const App = () => {
           {!isLandingPage && (
             <Header
               onMenuClick={() => setSidebarOpen(true)}
-              genres={genres}
+              genres={allGenres}
             />
           )}
 
           <main className="flex-1 relative">
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/browse" element={<Home genres={genres} />} />
-              <Route path="/genre/:genreId" element={<GenreList genres={genres} />} />
-              <Route path="/genre/:genreId/:subId" element={<SubCategoryDetail genres={genres} />} />
+              <Route path="/browse" element={<Home genres={allGenres} />} />
+              <Route path="/genre/:genreId" element={<GenreList genres={allGenres} />} />
+              <Route path="/genre/:genreId/:subId" element={<SubCategoryDetail genres={allGenres} />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/library" element={<Library />} />
@@ -85,4 +90,5 @@ const App = () => {
   );
 };
 
+// HMR Update
 export default App;

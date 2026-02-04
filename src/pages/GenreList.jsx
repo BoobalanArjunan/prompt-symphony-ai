@@ -25,7 +25,17 @@ const GENRE_MOODS = {
     minimalist: ['Repetitive', 'Hypnotic', 'Sparse', 'Clean', 'Patterned', 'Subtle', 'Focus', 'Organic', 'Pure', 'Understated'],
     glitch: ['Broken', 'Erratic', 'Corrupted', 'Digital', 'Chaotic', 'Fragmented', 'Stuttering', 'Malfunctioning', 'Unstable', 'Destroyed'],
     celestial: ['Divine', 'Infinite', 'Floating', 'Stellar', 'Heavenly', 'Serene', 'Cosmic', 'Weightless', 'Radiant', 'Blissful'],
-    edm: ['Hypnotic', 'Euphoric', 'Futuristic', 'Industrial', 'Glitchy', 'Ritualistic', 'Cybernetic', 'Aggressive', 'Pumping', 'Hard-hitting']
+
+    // EDM Families
+    house: ['Groovy', 'Soulful', 'Jackin', 'Deep', 'Funky', 'Tropical', 'Lounge', 'Club', 'Vocal', 'Hypnotic'],
+    techno: ['Driving', 'Mechanical', 'Dark', 'Industrial', 'Hypnotic', 'Minimal', 'Peak-Time', 'Acid', 'Raw', 'Futuristic'],
+    trance: ['Euphoric', 'Uplifting', 'Dreamy', 'Soaring', 'Anthemic', 'Progressive', 'Psychadeleic', 'Spiritual', 'Energetic', 'Floating'],
+    'bass-music': ['Heavy', 'Wobbly', 'Aggressive', 'Grimy', 'Filthy', 'Sub-shaking', 'Drop-focused', 'Intense', 'Dark', 'Distorted'],
+    dnb: ['Fast', 'Liquid', 'Rolling', 'Neuro', 'Jungle', 'Breakbeat', 'Soulful', 'Energetic', 'Complex', 'Driving'],
+    future: ['Bright', 'Pop', 'Colorful', 'Wavy', 'Melodic', 'Trap-influenced', 'Uplifting', 'Modern', 'Synthesized', 'Clean'],
+    'hard-dance': ['Distorted', 'Extreme', 'Fast', 'Aggressive', 'Rave', 'Pumping', 'Hardcore', 'Relentless', 'Mainstage', 'Raw'],
+    chill: ['Relaxed', 'Lo-Fi', 'Downtempo', 'Ambient', 'Cozy', 'Study', 'Nostalgic', 'Soft', 'Background', 'Mellow'],
+    rare: ['Experimental', 'Glitchy', 'Abstract', 'Intellectual', 'Complex', 'Niche', 'Generative', 'Weird', 'Cerebral', 'Underground']
 };
 
 const GenreList = ({ genres }) => {
@@ -52,7 +62,7 @@ const GenreList = ({ genres }) => {
 
 
     const isAction = genre.id === 'action';
-    const isEDM = genre.id === 'edm';
+    const isEDM = ['house', 'techno', 'trance', 'bass-music', 'dnb', 'future', 'hard-dance', 'chill', 'rare'].includes(genre.id);
 
     // Theme values
     let theme;

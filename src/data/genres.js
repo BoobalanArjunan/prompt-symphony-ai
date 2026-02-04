@@ -1252,40 +1252,7 @@ export const genres = [
             ...moodExpansionGlitch
         ]
     },
-    {
-        id: 'edm',
-        title: 'EDM / Experimental',
-        icon: Activity,
-        description: 'High-energy, rhythm-driven electronic music. Rare, experimental, and cinematic sub-genres.',
-        subcategories: [
-            {
-                id: 'dark-experimental',
-                title: 'Dark Experimental',
-                moodUseCase: 'Underground, ritualistic, driven by dark atmosphere.',
-                coreTheory: {
-                    tempo: '90-120 BPM',
-                    rhythm: 'Hypnotic, broken beat',
-                    harmony: 'Phrygian, Dissonant',
-                    melody: 'Minimal, repetitive',
-                    orchestration: 'Distorted Kicks, Drone Layers'
-                },
-                variations: [
-                    {
-                        id: 'ritual-techno',
-                        name: 'Ritual Techno',
-                        scales: { primary: 'Phrygian', secondary: 'Locrian' },
-                        chords: {
-                            types: 'Power Chords',
-                            progressions: ['i - bII - i']
-                        },
-                        prompt: 'Create a dark ritual techno track at 110 BPM. The kick should be massive and distorted, creating a hypnotic pulse. Use broken, syncopated rhythms on metal percussion. A low, droning bass texture provides the foundation. There is no traditional melody, only evolving textural layers and occasional chanting samples. The mood is oppressive and trance-like.'
-                    }
-                ]
-            },
-            ...generatedEDMSubcategories,
-            ...moodExpansionEDM
-        ]
-    },
+
     {
         id: 'celestial',
         title: 'Celestial / Cosmic',
