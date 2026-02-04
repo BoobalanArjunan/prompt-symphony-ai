@@ -1,3 +1,4 @@
+import { generateEDMSubcategories } from './edm_generator';
 import { legacyRareStyles, expandedEdmGenres } from './edm_rare_expansion';
 import {
     Zap, Activity, Sun, Speaker, Rocket, Flame, Cloud, Star, Eye, Music, Disc, Radio,
@@ -76,7 +77,9 @@ export const edmGenres = [
                         prompt: 'Create an emotional, anthemic Progressive House track at 128 BPM. Start with a plucked melody that slowly opens up the cutoff filter. Introduce a euphoric chord progression on saw-wave synthesizers. The build-up should be long and dramatic, leading to a massive drop that is melodically rich and uplifting. Perfect for a main stage festival sunset.'
                     }
                 ]
-            }
+            },
+            // Generate 10,000 additional House variations
+            ...generateEDMSubcategories('house', 'House', 'standard', 10000)
         ]
     },
     {
@@ -122,7 +125,9 @@ export const edmGenres = [
                         prompt: 'Compose a Melodic Techno track at 124 BPM. Center the track around a rolling 16th-note bassline (Arp). Add a slowly evolving, emotional synthesizer lead with plenty of delay. The atmosphere should be spacey and futuristic, blending the driving beat of techno with the emotion of trance.'
                     }
                 ]
-            }
+            },
+            // Generate 10,000 additional Techno variations
+            ...generateEDMSubcategories('techno', 'Techno', 'standard', 10000)
         ]
     },
     {
@@ -168,7 +173,9 @@ export const edmGenres = [
                         prompt: 'Generate a Psytrance track at 145 BPM. The foundation is a galloping "K-B-B-B" bassline. Layer in squelchy acid lines and alien sound effects that pan rapidly. The melody should use Eastern scales like Phrygian Dominant to create a mystical, trippy vibe. High energy and hypnotic.'
                     }
                 ]
-            }
+            },
+            // Generate 10,000 additional Trance variations
+            ...generateEDMSubcategories('trance', 'Trance', 'standard', 10000)
         ]
     },
     {
@@ -214,7 +221,9 @@ export const edmGenres = [
                         prompt: 'Create a happy, bouncy Future Bass track at 150 BPM. Use lush, detuned saw chords that "wub" with the sidechain compression. The melody should be a high-pitched vocal chop or lead. Include trap hi-hat rolls and a sharp snare. The mood is uplifting, colorful, and anime-inspired.'
                     }
                 ]
-            }
+            },
+            // Generate 10,000 additional Bass Music variations
+            ...generateEDMSubcategories('bass-music', 'Bass Music', 'standard', 10000)
         ]
     },
     {
@@ -260,7 +269,9 @@ export const edmGenres = [
                         prompt: 'Create a dark, technical Neurofunk track at 172 BPM. The drums should be extremely tight and punchy. The main element is a distorted, filtering bassline that morphs and moves. Use sci-fi FX and dark atmospheres. High energy and precise.'
                     }
                 ]
-            }
+            },
+            // Generate 10,000 additional DnB variations
+            ...generateEDMSubcategories('dnb', 'Drum & Bass', 'standard', 10000)
         ]
     },
     {
@@ -287,7 +298,9 @@ export const edmGenres = [
                         prompt: 'Generate a Synthwave track fitting for a night drive in a neon city. Tempo 110 BPM. Use a thumping Linndrum kick and a massive gated reverb snare. The bass should be a rolling analog 8th-note arp. Add a heroic, nostalgia-filled melody on a bright analog lead synth.'
                     }
                 ]
-            }
+            },
+            // Generate 10,000 additional Synthwave variations
+            ...generateEDMSubcategories('synthwave', 'Synthwave', 'standard', 10000)
         ]
     },
     {
@@ -314,7 +327,9 @@ export const edmGenres = [
                         prompt: 'Create a Psybient track for deep relaxation. 90 BPM. Use a slow, dubby bassline and lots of delay effects on percussion. The pads should be lush and evolving. Incorporate organic sounds like water or wind. The mood is trippy and spiritual.'
                     }
                 ]
-            }
+            },
+            // Generate 10,000 additional Ambient variations
+            ...generateEDMSubcategories('ambient-edm', 'Ambient', 'standard', 10000)
         ]
     },
     {
@@ -361,7 +376,9 @@ export const edmGenres = [
                     }
                 ]
             },
-            ...legacyRareStyles
+            ...legacyRareStyles,
+            // Generate 10,000 additional Rare variations
+            ...generateEDMSubcategories('rare', 'Rare', 'experimental', 10000)
         ]
     },
     ...enhancedExpandedGenres
