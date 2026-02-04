@@ -123,7 +123,7 @@ export const expandedEdmGenres = newGenresConfig.map(g => ({
     id: g.id,
     title: g.title,
     // Use the Generator to create 10,000 subcategories
-    subcategories: generateEDMSubcategories(g.id, g.title, g.group, 1)
+    subcategories: generateEDMSubcategories(g.id, g.title, g.group, 10000)
 }));
 
 // Fallback for compatibility (if anything imports rareEdmExpansion directly)
