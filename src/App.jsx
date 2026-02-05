@@ -17,8 +17,10 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute'; // Strict Auth Rule
 import { genres } from './data/genres';
 import { edmGenres } from './data/edmGenres'; // Import EDM Data
+import { indianGenres } from './data/indianGenres'; // Import Indian Genre Data
 
 import Library from './pages/Library';
+import PromptBuilder from './pages/PromptBuilder';
 
 import LandingPage from './pages/LandingPage';
 
@@ -37,7 +39,7 @@ const App = () => {
   const isLandingPage = location.pathname === '/';
 
   // Combine for routing lookups
-  const allGenres = [...genres, ...edmGenres];
+  const allGenres = [...genres, ...edmGenres, ...indianGenres];
 
   return (
     <AuthProvider>
@@ -47,6 +49,7 @@ const App = () => {
           <Sidebar
             genres={genres}
             edmGenres={edmGenres}
+            indianGenres={indianGenres}
             isOpen={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
@@ -66,6 +69,11 @@ const App = () => {
               <Route path="/browse" element={
                 <ProtectedRoute>
                   <Home genres={allGenres} />
+                </ProtectedRoute>
+              } />
+              <Route path="/builder" element={
+                <ProtectedRoute>
+                  <PromptBuilder />
                 </ProtectedRoute>
               } />
               <Route path="/genre/:genreId" element={

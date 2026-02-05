@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { X, Music, ChevronRight, ChevronDown, Layers, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PricingModal from './PricingModal';
 
 const SidebarGroup = ({ title, icon: Icon, children, defaultOpen = false, level = 0 }) => {
     const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -36,7 +37,9 @@ const SidebarGroup = ({ title, icon: Icon, children, defaultOpen = false, level 
     );
 };
 
-const Sidebar = ({ genres, edmGenres = [], isOpen, onClose }) => {
+const Sidebar = ({ genres, edmGenres = [], indianGenres = [], isOpen, onClose }) => {
+    const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
+
     return (
         <>
             {/* Mobile Overlay */}
@@ -72,6 +75,15 @@ const Sidebar = ({ genres, edmGenres = [], isOpen, onClose }) => {
                 </div>
 
                 <nav className="p-4 space-y-1">
+                    <NavLink to="/builder" className={({ isActive }) =>
+                        `flex items-center gap-3 px-3 py-3 mb-4 rounded-xl transition-all duration-200 font-bold border ${isActive
+                            ? 'bg-gradient-to-r from-[var(--color-cinematic-gold)]/20 to-transparent border-[var(--color-cinematic-gold)]/50 text-[var(--color-cinematic-gold)]'
+                            : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-600 hover:text-white'
+                        }`
+                    }>
+                        <Zap size={20} className="text-[var(--color-cinematic-gold)]" />
+                        Prompt Studio
+                    </NavLink>
                     {/* Root Group: Cinematic Composing */}
                     <SidebarGroup title="Cinematic Composing" icon={Layers} defaultOpen={true} level={0}>
 
@@ -135,17 +147,65 @@ const Sidebar = ({ genres, edmGenres = [], isOpen, onClose }) => {
                         </SidebarGroup>
 
                     </SidebarGroup>
+
+                    {/* Root Group: Indian Music */}
+                    <SidebarGroup title="Indian Music" icon={Layers} defaultOpen={true} level={0}>
+
+                        {/* Nested Group: Genres */}
+                        <SidebarGroup title="Genres" icon={Music} defaultOpen={true} level={1}>
+                            {indianGenres.map((genre) => (
+                                <NavLink
+                                    key={genre.id}
+                                    to={`/genre/${genre.id}`}
+                                    onClick={() => {
+                                        if (window.innerWidth < 1024) onClose();
+                                    }}
+                                    style={{ paddingLeft: '48px' }} // Indent for level 2 items
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-3 px-3 py-2 mb-1 rounded-lg transition-all duration-200 group relative overflow-hidden block w-full ${isActive
+                                            ? 'bg-slate-900 text-[var(--color-cinematic-cyan)] border border-[var(--color-cinematic-cyan)]/30 shadow-[0_0_10px_rgba(34,211,238,0.1)]'
+                                            : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+                                        }`
+                                    }
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <div className={`absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-cinematic-cyan)] transition-transform duration-300 ${isActive ? 'translate-x-0' : '-translate-x-full'}`} />
+                                            <span className="text-sm font-medium truncate">{genre.title}</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            ))}
+                        </SidebarGroup>
+
+                    </SidebarGroup>
                 </nav>
 
                 <div className="p-4 mt-auto">
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 text-center">
-                        <p className="text-xs text-slate-400 mb-2">Need a custom prompt?</p>
-                        <div className="inline-block px-3 py-1 rounded bg-[var(--color-cinematic-gold)]/10 text-[var(--color-cinematic-gold)] text-xs font-bold">
-                            Coming Soon
+                    <button
+                        onClick={() => setIsPricingModalOpen(true)}
+                        className="w-full p-4 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 border border-indigo-400/30 text-center hover:shadow-[0_0_15px_rgba(99,102,241,0.5)] transition-all group relative overflow-hidden"
+                    >
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                        <div className="relative z-10 flex flex-col items-center">
+                            <div className="flex items-center gap-2 mb-2 text-white font-bold">
+                                <Zap size={18} className="fill-yellow-400 text-yellow-400 animate-pulse" />
+                                <span>Upgrade to Pro</span>
+                            </div>
+                            <p className="text-xs text-indigo-100 mb-3">Unlock unlimited prompts & exclusive genres.</p>
+                            <div className="bg-white/20 hover:bg-white/30 text-white text-xs font-bold py-1.5 px-4 rounded-lg transition-colors w-full">
+                                Get Pro Access
+                            </div>
                         </div>
-                    </div>
+                    </button>
                 </div>
             </aside>
+
+            {/* Pricing Modal Integration */}
+            <PricingModal
+                isOpen={isPricingModalOpen}
+                onClose={() => setIsPricingModalOpen(false)}
+            />
         </>
     );
 };

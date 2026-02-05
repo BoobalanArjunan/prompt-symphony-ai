@@ -11,7 +11,16 @@ import { generatedActionSubcategories } from './action_generator';
 import { generatedActionSubcategories2 } from './action_generator_2';
 import { generatedActionSubcategories3 } from './action_generator_3';
 import { generatedAdventureSubcategories } from './adventure_generator';
+
 import { generatedAdventureSubcategories2 } from './adventure_generator_2';
+import { adventureSubcategories1 } from './adventure_subcategories_1';
+import { suspenseSubcategories1 } from './suspense_subcategories_1';
+import { horrorSubcategories1 } from './horror_subcategories_1';
+import { comedySubcategories1 } from './comedy_subcategories_1';
+import { romanceSubcategories1 } from './romance_subcategories_1';
+import { scifiSubcategories1 } from './scifi_subcategories_1';
+import { sadnessSubcategories1 } from './sadness_subcategories_1';
+import { fantasySubcategories1 } from './fantasy_subcategories_1';
 import {
     moodExpansionAction, moodExpansionAdventure, moodExpansionSuspense, moodExpansionHorror,
     moodExpansionComedy, moodExpansionRomance, moodExpansionSadness, moodExpansionFantasy,
@@ -162,6 +171,7 @@ export const genres = [
                     }
                 ]
             },
+            ...adventureSubcategories1,
             ...generatedAdventureSubcategories,
             ...generatedAdventureSubcategories2,
             ...moodExpansionAdventure
@@ -266,6 +276,7 @@ export const genres = [
                     }
                 ]
             },
+            ...suspenseSubcategories1,
             ...generatedSuspenseSubcategories,
             ...moodExpansionSuspense
         ]
@@ -369,6 +380,7 @@ export const genres = [
                     }
                 ]
             },
+            ...horrorSubcategories1,
             ...generatedHorrorSubcategories,
             ...moodExpansionHorror
         ]
@@ -472,6 +484,7 @@ export const genres = [
                     }
                 ]
             },
+            ...comedySubcategories1,
             ...generatedComedySubcategories,
             ...moodExpansionComedy
         ]
@@ -575,6 +588,7 @@ export const genres = [
                     }
                 ]
             },
+            ...romanceSubcategories1,
             ...generatedRomanceSubcategories,
             ...moodExpansionRomance
         ]
@@ -695,6 +709,7 @@ export const genres = [
                     }
                 ]
             },
+            ...sadnessSubcategories1,
             ...generatedSadnessSubcategories,
             ...moodExpansionSadness
         ]
@@ -798,6 +813,7 @@ export const genres = [
                     }
                 ]
             },
+            ...fantasySubcategories1,
             ...generatedFantasySubcategories,
             ...moodExpansionFantasy
         ]
@@ -976,6 +992,7 @@ export const genres = [
                     }
                 ]
             },
+            ...scifiSubcategories1,
             ...generatedSciFiSubcategories,
             ...moodExpansionSciFi
         ]
