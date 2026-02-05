@@ -14,6 +14,7 @@ import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute'; // Strict Auth Rule
 import { genres } from './data/genres';
 import { edmGenres } from './data/edmGenres'; // Import EDM Data
 
@@ -62,18 +63,38 @@ const App = () => {
           <main className="flex-1 relative">
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/browse" element={<Home genres={allGenres} />} />
-              <Route path="/genre/:genreId" element={<GenreList genres={allGenres} />} />
-              <Route path="/genre/:genreId/:subId" element={<SubCategoryDetail genres={allGenres} />} />
+              <Route path="/browse" element={
+                <ProtectedRoute>
+                  <Home genres={allGenres} />
+                </ProtectedRoute>
+              } />
+              <Route path="/genre/:genreId" element={
+                <ProtectedRoute>
+                  <GenreList genres={allGenres} />
+                </ProtectedRoute>
+              } />
+              <Route path="/genre/:genreId/:subId" element={
+                <ProtectedRoute>
+                  <SubCategoryDetail genres={allGenres} />
+                </ProtectedRoute>
+              } />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/library" element={<Library />} />
+              <Route path="/library" element={
+                <ProtectedRoute>
+                  <Library />
+                </ProtectedRoute>
+              } />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
               <Route path="*" element={<div className="p-10 text-center text-slate-500">Page not found</div>} />
             </Routes>
           </main>

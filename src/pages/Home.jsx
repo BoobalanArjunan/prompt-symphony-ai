@@ -3,6 +3,19 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Home = ({ genres }) => {
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const ITEMS_PER_PAGE = 48;
+
+    const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+    const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+    const currentGenres = genres.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(genres.length / ITEMS_PER_PAGE);
+
+    // Scroll to top when page changes
+    React.useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [currentPage]);
+
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             {/* Hero Section */}
@@ -15,11 +28,16 @@ const Home = ({ genres }) => {
                 <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-400 leading-relaxed">
                     Select a genre below to explore practical composition techniques, orchestration tips, and harmonic structures used in film and game scoring.
                 </p>
+
+                {/* Items Total Badge */}
+                <div className="mt-6 inline-flex items-center px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700">
+                    <span className="text-sm text-slate-400">Showing {currentGenres.length} of {genres.length} Genres</span>
+                </div>
             </div>
 
             {/* Genre Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {genres.map((genre, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[500px]">
+                {currentGenres.map((genre, index) => (
                     <motion.div
                         key={genre.id}
                         initial={{ opacity: 0, y: 20 }}
@@ -48,6 +66,42 @@ const Home = ({ genres }) => {
                     </motion.div>
                 ))}
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-6 mt-16 pb-8">
+                    <button
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                        className="px-6 py-3 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-slate-700 font-medium"
+                    >
+                        Previous
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                            <button
+                                key={page}
+                                onClick={() => setCurrentPage(page)}
+                                className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors border ${currentPage === page
+                                        ? 'bg-[var(--color-cinematic-cyan)] text-slate-900 border-[var(--color-cinematic-cyan)] font-bold'
+                                        : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700'
+                                    }`}
+                            >
+                                {page}
+                            </button>
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                        disabled={currentPage === totalPages}
+                        className="px-6 py-3 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-slate-700 font-medium"
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

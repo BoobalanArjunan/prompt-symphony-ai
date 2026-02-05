@@ -153,17 +153,6 @@ const PromptCard = ({ prompt, promptId, theme, genre, subGenre }) => {
                     </h3>
 
                     <div className="flex items-center gap-2">
-                        {/* Favorite Button (Star Icon) - Quick Toggle */}
-                        <button
-                            onClick={handleFavorite}
-                            className={`p-1.5 rounded-md border transition-all ${isFavorite
-                                ? 'bg-yellow-500/10 border-yellow-500/50 text-yellow-400'
-                                : 'border-transparent text-slate-500 hover:text-yellow-400 hover:bg-yellow-500/10'}`}
-                            title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-                        >
-                            <Star size={16} fill={isFavorite ? "currentColor" : "none"} />
-                        </button>
-
                         {/* Save Button (Explicit Text) */}
                         <button
                             onClick={handleFavorite}
@@ -176,13 +165,15 @@ const PromptCard = ({ prompt, promptId, theme, genre, subGenre }) => {
                             {isFavorite ? 'Saved' : 'Save to my Library'}
                         </button>
 
-                        {/* Suno / Udio / Etc Static Indicator */}
-                        <div
-                            className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-md text-white bg-gradient-to-r from-indigo-600 to-purple-600 border border-indigo-400/30 shadow-lg shadow-indigo-500/20 cursor-default select-none`}
+                        {/* Suno / Udio / Etc Optimized Copy Button */}
+                        <button
+                            onClick={handleSunoCopy}
+                            className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-md text-white bg-gradient-to-r from-indigo-600 to-purple-600 border border-indigo-400/30 shadow-lg shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all`}
+                            title="Copy optimized tags for AI generators"
                         >
-                            <Music2 size={14} />
-                            Suno / Udio / Etc..
-                        </div>
+                            {sunoCopied ? <Check size={14} /> : <Music2 size={14} />}
+                            {sunoCopied ? 'Copied Tags!' : 'Suno / Udio / Etc..'}
+                        </button>
 
                         {/* Standard Copy Button - Secondary Action */}
                         <button
