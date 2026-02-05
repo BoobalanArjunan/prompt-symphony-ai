@@ -48,7 +48,7 @@ const LandingPage = () => {
 
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-200 to-slate-500 mb-6 tracking-tight leading-[1.1]">
                         The Ultimate <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">200K Music Prompt</span> Explorer
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">900K Music Prompt</span> Explorer
                     </h1>
 
                     <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -85,14 +85,14 @@ const LandingPage = () => {
                         <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <Zap className="text-white" size={32} />
                         </div>
-                        <h3 className="text-4xl font-black text-white mb-2">200K+</h3>
+                        <h3 className="text-4xl font-black text-white mb-2">900K+</h3>
                         <p className="text-slate-400 font-medium">Distinct Prompts Generated</p>
                     </div>
                     <div className="text-center group p-6 rounded-2xl hover:bg-slate-800/50 transition-colors cursor-default">
                         <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <Globe className="text-white" size={32} />
                         </div>
-                        <h3 className="text-4xl font-black text-white mb-2">20+</h3>
+                        <h3 className="text-4xl font-black text-white mb-2">80+</h3>
                         <p className="text-slate-400 font-medium">Unique Genres Covered</p>
                     </div>
                     <div className="text-center group p-6 rounded-2xl hover:bg-slate-800/50 transition-colors cursor-default">
