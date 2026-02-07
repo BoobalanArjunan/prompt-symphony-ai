@@ -37,7 +37,7 @@ const SidebarGroup = ({ title, icon: Icon, children, defaultOpen = false, level 
     );
 };
 
-const Sidebar = ({ genres, edmGenres = [], indianGenres = [], isOpen, onClose }) => {
+const Sidebar = ({ genres, edmGenres = [], indianGenres = [], choirGenres = [], isOpen, onClose }) => {
     const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
 
     return (
@@ -148,12 +148,45 @@ const Sidebar = ({ genres, edmGenres = [], indianGenres = [], isOpen, onClose })
 
                     </SidebarGroup>
 
+
                     {/* Root Group: Indian Music */}
                     <SidebarGroup title="Indian Music" icon={Layers} defaultOpen={true} level={0}>
 
                         {/* Nested Group: Genres */}
                         <SidebarGroup title="Genres" icon={Music} defaultOpen={true} level={1}>
                             {indianGenres.map((genre) => (
+                                <NavLink
+                                    key={genre.id}
+                                    to={`/genre/${genre.id}`}
+                                    onClick={() => {
+                                        if (window.innerWidth < 1024) onClose();
+                                    }}
+                                    style={{ paddingLeft: '48px' }} // Indent for level 2 items
+                                    className={({ isActive }) =>
+                                        `flex items-center gap-3 px-3 py-2 mb-1 rounded-lg transition-all duration-200 group relative overflow-hidden block w-full ${isActive
+                                            ? 'bg-slate-900 text-[var(--color-cinematic-cyan)] border border-[var(--color-cinematic-cyan)]/30 shadow-[0_0_10px_rgba(34,211,238,0.1)]'
+                                            : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+                                        }`
+                                    }
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <div className={`absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-cinematic-cyan)] transition-transform duration-300 ${isActive ? 'translate-x-0' : '-translate-x-full'}`} />
+                                            <span className="text-sm font-medium truncate">{genre.title}</span>
+                                        </>
+                                    )}
+                                </NavLink>
+                            ))}
+                        </SidebarGroup>
+
+                    </SidebarGroup>
+
+                    {/* Root Group: Choir / Choral Music */}
+                    <SidebarGroup title="Choir / Choral Music" icon={Layers} defaultOpen={true} level={0}>
+
+                        {/* Nested Group: Genres */}
+                        <SidebarGroup title="Genres" icon={Music} defaultOpen={true} level={1}>
+                            {choirGenres.map((genre) => (
                                 <NavLink
                                     key={genre.id}
                                     to={`/genre/${genre.id}`}

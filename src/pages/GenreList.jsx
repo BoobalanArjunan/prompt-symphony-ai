@@ -110,33 +110,35 @@ const GenreList = ({ genres }) => {
     }
 
     // Filter Logic
-    const filteredSubcategories = (genre.subcategories || []).filter(sub => {
-        // Text Search
-        const matchesSearch = sub.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (sub.moodUseCase && sub.moodUseCase.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredSubcategories = React.useMemo(() => {
+        return (genre.subcategories || []).filter(sub => {
+            // Text Search
+            const matchesSearch = sub.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (sub.moodUseCase && sub.moodUseCase.toLowerCase().includes(searchTerm.toLowerCase()));
 
-        // Mood Filter (Check tags or implicit mood text)
-        let matchesMood = true;
-        if (moodFilter !== 'All') {
-            const moodText = (sub.moodUseCase || '') + (sub.tags ? sub.tags.join(' ') : '');
-            matchesMood = moodText.toLowerCase().includes(moodFilter.toLowerCase());
-        }
+            // Mood Filter (Check tags or implicit mood text)
+            let matchesMood = true;
+            if (moodFilter !== 'All') {
+                const moodText = (sub.moodUseCase || '') + (sub.tags ? sub.tags.join(' ') : '');
+                matchesMood = moodText.toLowerCase().includes(moodFilter.toLowerCase());
+            }
 
-        // Tempo Filter (Check tags or coreTheory.tempo)
-        let matchesTempo = true;
-        if (tempoFilter !== 'All') {
-            const tempoText = (sub.coreTheory?.tempo || '') + (sub.tags ? sub.tags.join(' ') : '');
-            // "Fast", "Slow", "Medium" check
-            if (tempoFilter === 'Very Fast') matchesTempo = tempoText.toLowerCase().includes('very fast') || tempoText.includes('160') || tempoText.includes('170') || tempoText.includes('180');
-            else if (tempoFilter === 'Fast') matchesTempo = (tempoText.toLowerCase().includes('fast') && !tempoText.toLowerCase().includes('very')) || tempoText.includes('130') || tempoText.includes('140') || tempoText.includes('150');
-            else if (tempoFilter === 'Very Slow') matchesTempo = tempoText.toLowerCase().includes('very slow') || tempoText.includes('40') || tempoText.includes('50');
-            else if (tempoFilter === 'Slow') matchesTempo = (tempoText.toLowerCase().includes('slow') && !tempoText.toLowerCase().includes('very')) || tempoText.includes('60') || tempoText.includes('70') || tempoText.includes('80') || tempoText.includes('90');
-            else if (tempoFilter === 'Medium') matchesTempo = !tempoText.toLowerCase().includes('fast') && !tempoText.toLowerCase().includes('slow') && !tempoText.toLowerCase().includes('very') && !tempoText.toLowerCase().includes('epic');
-            else if (tempoFilter === 'Epic') matchesTempo = tempoText.toLowerCase().includes('epic') || tempoText.includes('140');
-        }
+            // Tempo Filter (Check tags or coreTheory.tempo)
+            let matchesTempo = true;
+            if (tempoFilter !== 'All') {
+                const tempoText = (sub.coreTheory?.tempo || '') + (sub.tags ? sub.tags.join(' ') : '');
+                // "Fast", "Slow", "Medium" check
+                if (tempoFilter === 'Very Fast') matchesTempo = tempoText.toLowerCase().includes('very fast') || tempoText.includes('160') || tempoText.includes('170') || tempoText.includes('180');
+                else if (tempoFilter === 'Fast') matchesTempo = (tempoText.toLowerCase().includes('fast') && !tempoText.toLowerCase().includes('very')) || tempoText.includes('130') || tempoText.includes('140') || tempoText.includes('150');
+                else if (tempoFilter === 'Very Slow') matchesTempo = tempoText.toLowerCase().includes('very slow') || tempoText.includes('40') || tempoText.includes('50');
+                else if (tempoFilter === 'Slow') matchesTempo = (tempoText.toLowerCase().includes('slow') && !tempoText.toLowerCase().includes('very')) || tempoText.includes('60') || tempoText.includes('70') || tempoText.includes('80') || tempoText.includes('90');
+                else if (tempoFilter === 'Medium') matchesTempo = !tempoText.toLowerCase().includes('fast') && !tempoText.toLowerCase().includes('slow') && !tempoText.toLowerCase().includes('very') && !tempoText.toLowerCase().includes('epic');
+                else if (tempoFilter === 'Epic') matchesTempo = tempoText.toLowerCase().includes('epic') || tempoText.includes('140');
+            }
 
-        return matchesSearch && matchesMood && matchesTempo;
-    });
+            return matchesSearch && matchesMood && matchesTempo;
+        });
+    }, [genre.subcategories, searchTerm, moodFilter, tempoFilter]);
 
     // Pagination Logic
     const totalItems = filteredSubcategories.length;

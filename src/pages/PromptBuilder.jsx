@@ -6,11 +6,13 @@ import {
 } from 'lucide-react';
 import { genres } from '../data/genres';
 import { edmGenres } from '../data/edmGenres';
+
 import { indianGenres } from '../data/indianGenres';
+import { choirGenres } from '../data/choirGenres';
 import { MOODS, SCALES, CHORDS, INSTRUMENTS } from '../data/musicTheory';
 
 // Combine all genres for the builder
-const ALL_GENRES = [...genres, ...edmGenres, ...indianGenres];
+const ALL_GENRES = [...genres, ...edmGenres, ...indianGenres, ...choirGenres];
 
 // Custom Searchable Select Component
 // Custom Searchable Select Component
@@ -187,10 +189,12 @@ const PromptBuilder = () => {
     const [activeTab, setActiveTab] = useState('standard'); // standard, suno, udio
 
     // Filter Logic based on Category
+    // Filter Logic based on Category
     const filteredGenres = ALL_GENRES.filter(g => {
         if (selectedCategory === 'Cinematic') return genres.some(x => x.id === g.id);
         if (selectedCategory === 'Electronic') return edmGenres.some(x => x.id === g.id);
         if (selectedCategory === 'World') return indianGenres.some(x => x.id === g.id);
+        if (selectedCategory === 'Choir') return choirGenres.some(x => x.id === g.id);
         return false;
     });
 
@@ -314,7 +318,7 @@ const PromptBuilder = () => {
 
                         {/* Category Tabs */}
                         <div className="flex gap-2 mb-4 p-1 bg-slate-950 rounded-lg">
-                            {['Cinematic', 'Electronic', 'World'].map(cat => (
+                            {['Cinematic', 'Electronic', 'World', 'Choir'].map(cat => (
                                 <button
                                     key={cat}
                                     onClick={() => setSelectedCategory(cat)}
